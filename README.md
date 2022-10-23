@@ -15,3 +15,6 @@ To check different symbol like GBP, run following:
 ```shell
 python main.py gbp
 ```
+
+### References
+- http://api.nbp.pl/en.html
