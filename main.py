@@ -10,6 +10,11 @@ def get_euro_to_pln_exchange_rate(currency='eur'):
         currency -- Symbol of currency to fetch the rate for (default = "eur")
     """
     result = requests.get(f'http://api.nbp.pl/api/exchangerates/rates/a/{currency}/'.format(currency=currency))
+
+    if result.status_code != 200:
+        print(f'{currency} is not a valid symbol')
+        return
+
     data = json.loads(result.text)
     rate = data["rates"][0]["mid"]
 
