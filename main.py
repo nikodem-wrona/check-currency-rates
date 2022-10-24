@@ -20,7 +20,12 @@ def exchange_rate_to_pln(currency='eur'):
     data = json.loads(result.text)
     rate = data["rates"][0]["mid"]
 
-    print(f'{currency.upper()}/PLN rate : {rate}')
+    output = {
+        "currency": currency,
+        "price": rate,
+    }
+
+    print(json.dumps(output))
 
 
 if len(sys.argv) > 1:
@@ -28,5 +33,3 @@ if len(sys.argv) > 1:
     exchange_rate_to_pln(currency=currencySymbol)
 else:
     exchange_rate_to_pln()
-
-
