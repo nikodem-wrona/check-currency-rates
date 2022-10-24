@@ -3,17 +3,19 @@ import json
 import sys
 
 
-def get_euro_to_pln_exchange_rate(currency='eur'):
+def exchange_rate_to_pln(currency='eur'):
     """Fetches current rate of given currency to PLN from NBP.
 
     Keyword arguments
         currency -- Symbol of currency to fetch the rate for (default = "eur")
     """
-    result = requests.get(f'http://api.nbp.pl/api/exchangerates/rates/a/{currency}/'.format(currency=currency))
+    result = requests.get(f'http://api.nbp.pl/api/exchangerates/rates/a/{currency}/')
 
-    if result.status_code != 200:
-        print(f'{currency} is not a valid symbol')
-        return
+    code = result.status_code
+    if code == 404:
+        return print(f'{currency} is not a valid currency.')
+    elif code != 200:
+        return print(f'Error: {code}')
 
     data = json.loads(result.text)
     rate = data["rates"][0]["mid"]
@@ -23,8 +25,8 @@ def get_euro_to_pln_exchange_rate(currency='eur'):
 
 if len(sys.argv) > 1:
     currencySymbol = sys.argv[1]
-    get_euro_to_pln_exchange_rate(currency=currencySymbol)
+    exchange_rate_to_pln(currency=currencySymbol)
 else:
-    get_euro_to_pln_exchange_rate()
+    exchange_rate_to_pln()
 
 
