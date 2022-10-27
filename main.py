@@ -1,6 +1,11 @@
 import requests
 import json
 import sys
+import time
+
+
+def fetch_rate_from_nbp(currency) -> requests.Response:
+    return requests.get(f'http://api.nbp.pl/api/exchangerates/rates/a/{currency}/')
 
 
 def exchange_rate_to_pln(currency='eur'):
@@ -9,7 +14,7 @@ def exchange_rate_to_pln(currency='eur'):
     Keyword arguments
         currency -- Symbol of currency to fetch the rate for (default = "eur")
     """
-    result = requests.get(f'http://api.nbp.pl/api/exchangerates/rates/a/{currency}/')
+    result = fetch_rate_from_nbp(currency)
 
     code = result.status_code
     if code == 404:
@@ -23,6 +28,7 @@ def exchange_rate_to_pln(currency='eur'):
     output = {
         "currency": currency,
         "price": rate,
+        "timestamp": f'{time.time()}'
     }
 
     print(json.dumps(output))
